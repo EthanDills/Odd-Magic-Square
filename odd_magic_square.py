@@ -1,53 +1,67 @@
 '''
-given non-zero positive odd integer N, create an N-by-N magic square    
+given non-zero positive odd integer n, create an n-by-n magic square    
 '''
 
-
-# Initialize
-n = 5
-square = [[0 for j in range(n)] for i in range(n)]   # initially filled with sentinels
-
-# def initialize(n):
-    # number = n
-    # if(n>0 and n%2==1): # if n is greater than zero and odd
-        
-    #     for c in range(1, n+1): # filling in the center (n by n) with zeroes
-    #         for r in range(1, n+1):    
-    #             square[r][c]= 0
-    #     for
-    # else:
-    #     print("invalid input. n must be a positive, nonzero odd integer")
-
-
-
-
+# Initialize 
 
 # compute magic square
-    # if N is odd, start at the cell of the middle column at the top row
     # initial row = top row
     # initial column = middle column
-r = 0
-c = int( n/2 )
-
-def compute_square(square):
-    ''' let <r, c> equal the current row and column of the square s.t.
-
-
-        start at square[r][c]
-        Case Analysis:
-            - if r is 0, we need to move to the bottom-most row
-            - if c is n-1, we need to move to the left-most column
-        
-    '''
-    
-
 
 # output magic square
-def output_square():
-    for k in range(n): # just to see what it's like before computing the magic square
-        print(square[k])
 
-# initialize(n)
-square[r][c] = 1
-square[r+1][c] = 2
-output_square()
+
+def odd_magic_square(n):
+    if(n%2 == 1): # if n is odd, make a magic square. if it isn't odd (even), output such.
+
+        # initialize
+        square = [[0 for j in range(n)] for i in range(n)] # n by n square filled with zeros
+        r = 0 # initial row is the top-most row
+        c = int( n/2 ) # initial column is the middle column (not sure why it rounds up instead of flooring)
+        ''' 
+            start at square[r][c]
+            Iteration:
+                Case Analysis:
+                    - if r is 0, we need to move to the bottom-most row (r = n-1)
+                    - if c is n-1, we need to move to the left-most column (c = 0)
+                    - if a cell is already taken, we need to move down 1 row
+                    
+            
+        '''
+        # compute magic square
+        for i in range(n*n): # we have to traverse every square once
+            past_r = r # storing the current value of which row we're in for after r is changed
+
+            square[r][c] = i+1
+            if(r==0): # if we're on the top row, move to the bottom row
+                r = n-1
+            else:
+                r -= 1
+
+            if(c==n-1): # if we're on the right-most column, move to the left-most column
+                c = 0
+            else:
+                c += 1
+            
+            if(square[r][c] != 0): # condition to move down a row
+
+                if(past_r == n-1): # if the previous row was on the bottom, set the current row to the top row, else set the row to be directly below the previous row
+                    r = 0 
+                else: 
+                    r = past_r + 1 
+
+                if(c == 0): # if the current column is the left-most column, move to the right-most column
+                    c = n-1
+                else:
+                    c -= 1
+
+        # output magic square
+        for k in range(n):
+            print(square[k])
+
+    else:
+        print("n must be an odd, positive integer")
+        
+
+odd_magic_square(5)
+
